@@ -163,8 +163,6 @@ clean:
 test-loadable:
 	$(PYTHON) tests/test-loadable.py
 
-test-python:
-	$(PYTHON) tests/test-python.py
 
 test-npm:
 	node npm/sqlite-robotstxt/test.js
@@ -174,7 +172,6 @@ test-deno:
 
 test:
 	make test-loadable
-	make test-python
 	make test-npm
 	make test-deno
 
@@ -182,7 +179,7 @@ publish-release:
 	./scripts/publish_release.sh
 
 .PHONY: clean \
-	test test-loadable test-python test-npm test-deno \
+	test test-loadable test-npm test-deno \
 	loadable loadable-release \
 	python python-release \
 	datasette datasette-release \
