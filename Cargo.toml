@@ -2,6 +2,12 @@
 name = "sqlite-robotstxt"
 version = "0.0.1-alpha.1"
 edition = "2021"
+authors = ["Alex Garcia <alexsebastian.garcia@gmail.com>"]
+description = "A SQLite extension for parsing robots.txt files"
+homepage = "https://github.com/asg017/sqlite-robotstxt"
+repository = "https://github.com/asg017/sqlite-robotstxt"
+keywords = ["sqlite", "sqlite-extension"]
+license = "MIT/Apache-2.0"
 
 [lib]
 crate-type = ["lib", "dylib", "staticlib"]
