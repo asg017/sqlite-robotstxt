@@ -168,7 +168,7 @@ test-npm:
 	node bindings/node/sqlite-robotstxt/test.js
 
 test-deno:
-	deno task --config deno/deno.json test
+	deno task --config bindings/deno/deno.json test
 
 test:
 	make test-loadable
