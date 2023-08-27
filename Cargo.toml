@@ -1,0 +1,13 @@
+[package]
+name = "sqlite-robotstxt"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["lib", "dylib", "staticlib"]
+
+
+[dependencies]
+sqlite-loadable = "0.0.6-alpha.2"
+robotstxt = "0.3.0"
+
