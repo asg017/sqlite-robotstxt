@@ -33,7 +33,7 @@ TARGET_STATIC_RELEASE=$(prefix)/release/robotstxt0.a
 TARGET_WHEELS=$(prefix)/debug/wheels
 TARGET_WHEELS_RELEASE=$(prefix)/release/wheels
 
-INTERMEDIATE_PYPACKAGE_EXTENSION=python/sqlite_robotstxt/sqlite_robotstxt/robotstxt0.$(LOADABLE_EXTENSION)
+INTERMEDIATE_PYPACKAGE_EXTENSION=bindings/python/sqlite_robotstxt/robotstxt0.$(LOADABLE_EXTENSION)
 
 ifdef target
 CARGO_TARGET=--target=$(target)
@@ -75,25 +75,25 @@ $(TARGET_LOADABLE_RELEASE): $(prefix) $(shell find . -type f -name '*.rs')
 	cargo build --release $(CARGO_TARGET)
 	cp $(BUILT_LOCATION_RELEASE) $@
 
-python: $(TARGET_WHEELS) $(TARGET_LOADABLE) python/sqlite_robotstxt/setup.py python/sqlite_robotstxt/sqlite_robotstxt/__init__.py .github/workflows/rename-wheels.py
+python: $(TARGET_WHEELS) $(TARGET_LOADABLE) bindings/python/setup.py bindings/python/sqlite_robotstxt/__init__.py .github/workflows/rename-wheels.py
 	cp $(TARGET_LOADABLE) $(INTERMEDIATE_PYPACKAGE_EXTENSION)
 	rm $(TARGET_WHEELS)/sqlite_robotstxt* || true
-	pip3 wheel python/sqlite_robotstxt/ -w $(TARGET_WHEELS)
+	pip3 wheel bindings/python/ -w $(TARGET_WHEELS)
 	python3 .github/workflows/rename-wheels.py $(TARGET_WHEELS) $(RENAME_WHEELS_ARGS)
 
-python-release: $(TARGET_LOADABLE_RELEASE) $(TARGET_WHEELS_RELEASE) python/sqlite_robotstxt/setup.py python/sqlite_robotstxt/sqlite_robotstxt/__init__.py .github/workflows/rename-wheels.py
+python-release: $(TARGET_LOADABLE_RELEASE) $(TARGET_WHEELS_RELEASE) bindings/python/setup.py bindings/python/sqlite_robotstxt/__init__.py .github/workflows/rename-wheels.py
 	cp $(TARGET_LOADABLE_RELEASE)  $(INTERMEDIATE_PYPACKAGE_EXTENSION)
 	rm $(TARGET_WHEELS_RELEASE)/sqlite_robotstxt* || true
-	pip3 wheel python/sqlite_robotstxt/ -w $(TARGET_WHEELS_RELEASE)
+	pip3 wheel bindings/python/ -w $(TARGET_WHEELS_RELEASE)
 	python3 .github/workflows/rename-wheels.py $(TARGET_WHEELS_RELEASE) $(RENAME_WHEELS_ARGS)
 
-datasette: $(TARGET_WHEELS) python/datasette_sqlite_robotstxt/setup.py python/datasette_sqlite_robotstxt/datasette_sqlite_robotstxt/__init__.py
+datasette: $(TARGET_WHEELS) bindings/datasette/setup.py bindings/datasette/datasette_sqlite_robotstxt/__init__.py
 	rm $(TARGET_WHEELS)/datasette* || true
-	pip3 wheel python/datasette_sqlite_robotstxt/ --no-deps -w $(TARGET_WHEELS)
+	pip3 wheel bindings/datasette/ --no-deps -w $(TARGET_WHEELS)
 
-datasette-release: $(TARGET_WHEELS_RELEASE) python/datasette_sqlite_robotstxt/setup.py python/datasette_sqlite_robotstxt/datasette_sqlite_robotstxt/__init__.py
+datasette-release: $(TARGET_WHEELS_RELEASE) bindings/datasette/setup.py bindings/datasette/datasette_sqlite_robotstxt/__init__.py
 	rm $(TARGET_WHEELS_RELEASE)/datasette* || true
-	pip3 wheel python/datasette_sqlite_robotstxt/ --no-deps -w $(TARGET_WHEELS_RELEASE)
+	pip3 wheel bindings/datasette/ --no-deps -w $(TARGET_WHEELS_RELEASE)
 
 bindings/sqlite-utils/pyproject.toml: bindings/sqlite-utils/pyproject.toml.tmpl VERSION
 	VERSION=$(VERSION) envsubst < $< > $@
@@ -109,19 +109,19 @@ sqlite-utils: $(TARGET_WHEELS) bindings/sqlite-utils/pyproject.toml bindings/sql
 sqlite-utils-release: $(TARGET_WHEELS) bindings/sqlite-utils/pyproject.toml bindings/sqlite-utils/sqlite_utils_sqlite_robotstxt/version.py
 	python3 -m build bindings/sqlite-utils -w -o $(TARGET_WHEELS_RELEASE)
 
-npm: VERSION npm/platform-package.README.md.tmpl npm/platform-package.package.json.tmpl npm/sqlite-robotstxt/package.json.tmpl scripts/npm_generate_platform_packages.sh
-	scripts/npm_generate_platform_packages.sh
+npm: VERSION bindings/node/platform-package.README.md.tmpl bindings/node/platform-package.package.json.tmpl bindings/node/sqlite-robotstxt/package.json.tmpl scripts/node_generate_platform_packages.sh
+	scripts/node_generate_platform_packages.sh
 
-deno: VERSION deno/deno.json.tmpl
+deno: VERSION bindings/deno/deno.json.tmpl
 	scripts/deno_generate_package.sh
 
 Cargo.toml: VERSION
 	cargo set-version `cat VERSION`
 
-python/sqlite_robotstxt/sqlite_robotstxt/version.py: VERSION
+bindings/python/sqlite_robotstxt/version.py: VERSION
 	printf '__version__ = "%s"\n__version_info__ = tuple(__version__.split("."))\n' `cat VERSION` > $@
 
-python/datasette_sqlite_robotstxt/datasette_sqlite_robotstxt/version.py: VERSION
+bindings/python/datasette_sqlite_robotstxt/version.py: VERSION
 	printf '__version__ = "%s"\n__version_info__ = tuple(__version__.split("."))\n' `cat VERSION` > $@
 
 bindings/ruby/lib/version.rb: bindings/ruby/lib/version.rb.tmpl VERSION
@@ -131,8 +131,8 @@ ruby: bindings/ruby/lib/version.rb
 
 version:
 	make Cargo.toml
-	make python/sqlite_robotstxt/sqlite_robotstxt/version.py
-	make python/datasette_sqlite_robotstxt/datasette_sqlite_robotstxt/version.py
+	make bindings/python/sqlite_robotstxt/version.py
+	make bindings/datasette/datasette_sqlite_robotstxt/version.py
 	make bindings/sqlite-utils/pyproject.toml bindings/sqlite-utils/sqlite_utils_sqlite_robotstxt/version.py
 	make npm
 	make deno

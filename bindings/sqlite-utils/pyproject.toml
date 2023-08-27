@@ -1,0 +1,21 @@
+[project]
+name = "sqlite-utils-sqlite-robotstxt"
+version = "0.0.1-alpha.1"
+description = "TODO"
+readme = "README.md"
+authors = [{name = "Alex Garcia"}]
+license = {text = "Apache-2.0"}
+classifiers = []
+
+dependencies = [
+    "sqlite-utils",
+    "sqlite-robotstxt"
+]
+
+[project.urls]
+Homepage = "https://github.com/asg017/sqlite-robotstxt"
+Changelog = "https://github.com/asg017/sqlite-robotstxt/releases"
+Issues = "https://github.com/asg017/sqlite-robotstxt/issues"
+
+[project.entry-points.sqlite_utils]
+sqlite_robotstxt = "sqlite_utils_sqlite_robotstxt"
