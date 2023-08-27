@@ -249,37 +249,37 @@ jobs:
       - name: Download workflow artifacts
         uses: actions/download-artifact@v2
       - run: |
-          cp sqlite-robotstxt-ubuntu/robotstxt0.so bindings/nodesqlite-robotstxt-linux-x64/lib/robotstxt0.so
-          cp sqlite-robotstxt-macos/robotstxt0.dylib bindings/nodesqlite-robotstxt-darwin-x64/lib/robotstxt0.dylib
-          cp sqlite-robotstxt-macos-arm/robotstxt0.dylib bindings/nodesqlite-robotstxt-darwin-arm64/lib/robotstxt0.dylib
-          cp sqlite-robotstxt-windows/robotstxt0.dll bindings/nodesqlite-robotstxt-windows-x64/lib/robotstxt0.dll
+          cp sqlite-robotstxt-ubuntu/robotstxt0.so bindings/node/sqlite-robotstxt-linux-x64/lib/robotstxt0.so
+          cp sqlite-robotstxt-macos/robotstxt0.dylib bindings/node/sqlite-robotstxt-darwin-x64/lib/robotstxt0.dylib
+          cp sqlite-robotstxt-macos-arm/robotstxt0.dylib bindings/node/sqlite-robotstxt-darwin-arm64/lib/robotstxt0.dylib
+          cp sqlite-robotstxt-windows/robotstxt0.dll bindings/node/sqlite-robotstxt-windows-x64/lib/robotstxt0.dll
       - name: Install node
         uses: actions/setup-node@v3
         with:
           node-version: "16"
           registry-url: "https://registry.npmjs.org"
       - name: Publish NPM sqlite-robotstxt-linux-x64
-        working-directory: bindings/nodesqlite-robotstxt-linux-x64
+        working-directory: bindings/node/sqlite-robotstxt-linux-x64
         run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Publish NPM sqlite-robotstxt-darwin-x64
-        working-directory: bindings/nodesqlite-robotstxt-darwin-x64
+        working-directory: bindings/node/sqlite-robotstxt-darwin-x64
         run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Publish NPM sqlite-robotstxt-darwin-arm64
-        working-directory: bindings/nodesqlite-robotstxt-darwin-arm64
+        working-directory: bindings/node/sqlite-robotstxt-darwin-arm64
         run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Publish NPM sqlite-robotstxt-windows-x64
-        working-directory: bindings/nodesqlite-robotstxt-windows-x64
+        working-directory: bindings/node/sqlite-robotstxt-windows-x64
         run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Publish NPM sqlite-robotstxt
-        working-directory: bindings/nodesqlite-robotstxt
+        working-directory: bindings/node/sqlite-robotstxt
         run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
