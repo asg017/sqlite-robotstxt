@@ -62,7 +62,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: sqlite-robotstxt-ubuntu
-          path: bindings/nodesqlite-robotstxt-linux-x64/lib
+          path: bindings/node/sqlite-robotstxt-linux-x64/lib
       - uses: actions/download-artifact@v3
         with:
           name: sqlite-robotstxt-ubuntu-wheels
@@ -73,9 +73,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           cache: "npm"
-          cache-dependency-path: bindings/nodesqlite-robotstxt/package.json
+          cache-dependency-path: bindings/node/sqlite-robotstxt/package.json
       - run: npm install
-        working-directory: bindings/nodesqlite-robotstxt
+        working-directory: bindings/node/sqlite-robotstxt
       - run: make test-npm
       # for test-deno
       - uses: denoland/setup-deno@v1
@@ -144,7 +144,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: sqlite-robotstxt-macos
-          path: bindings/nodesqlite-robotstxt-darwin-x64/lib
+          path: bindings/node/sqlite-robotstxt-darwin-x64/lib
       - uses: actions/download-artifact@v3
         with:
           name: sqlite-robotstxt-macos-wheels
@@ -156,9 +156,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           cache: "npm"
-          cache-dependency-path: bindings/nodesqlite-robotstxt/package.json
+          cache-dependency-path: bindings/node/sqlite-robotstxt/package.json
       - run: npm install
-        working-directory: bindings/nodesqlite-robotstxt
+        working-directory: bindings/node/sqlite-robotstxt
       - run: make test-npm
       # for test-deno
       - uses: denoland/setup-deno@v1
@@ -269,7 +269,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: sqlite-robotstxt-windows
-          path: bindings/nodesqlite-robotstxt-windows-x64/lib
+          path: bindings/node/sqlite-robotstxt-windows-x64/lib
       - uses: actions/download-artifact@v3
         with:
           name: sqlite-robotstxt-windows-wheels
@@ -280,9 +280,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           cache: "npm"
-          cache-dependency-path: bindings/nodesqlite-robotstxt/package.json
+          cache-dependency-path: bindings/node/sqlite-robotstxt/package.json
       - run: npm install
-        working-directory: bindings/nodesqlite-robotstxt
+        working-directory: bindings/node/sqlite-robotstxt
       - run: make test-npm
       # for test-deno
       - uses: denoland/setup-deno@v1
