@@ -3,13 +3,13 @@
 # `x/sqlite_robotstxt` Deno Module
 
 [![Tags](https://img.shields.io/github/release/asg017/sqlite-robotstxt)](https://github.com/asg017/sqlite-robotstxt/releases)
-[![Doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https/deno.land/x/sqlite-robotstxt@0.0.1-alpha.1/mod.ts)
+[![Doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https/deno.land/x/sqlite-robotstxt@0.0.1-alpha.2/mod.ts)
 
 The [`sqlite-robotstxt`](https://github.com/asg017/sqlite-robotstxt) SQLite extension is available to Deno developers with the [`x/sqlite_robotstxt`](https://deno.land/x/sqlite_robotstxt) Deno module. It works with [`x/sqlite3`](https://deno.land/x/sqlite3), the fastest and native Deno SQLite3 module.
 
 ```js
 import { Database } from "https://deno.land/x/sqlite3@0.8.0/mod.ts";
-import * as sqlite_robotstxt from "https://deno.land/x/sqlite_robotstxt@v0.0.1-alpha.1/mod.ts";
+import * as sqlite_robotstxt from "https://deno.land/x/sqlite_robotstxt@v0.0.1-alpha.2/mod.ts";
 
 const db = new Database(":memory:");
 
