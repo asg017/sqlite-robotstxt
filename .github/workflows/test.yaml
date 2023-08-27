@@ -62,7 +62,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: sqlite-robotstxt-ubuntu
-          path: npm/sqlite-robotstxt-linux-x64/lib
+          path: bindings/nodesqlite-robotstxt-linux-x64/lib
       - uses: actions/download-artifact@v3
         with:
           name: sqlite-robotstxt-ubuntu-wheels
@@ -73,9 +73,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           cache: "npm"
-          cache-dependency-path: npm/sqlite-robotstxt/package.json
+          cache-dependency-path: bindings/nodesqlite-robotstxt/package.json
       - run: npm install
-        working-directory: npm/sqlite-robotstxt
+        working-directory: bindings/nodesqlite-robotstxt
       - run: make test-npm
       # for test-deno
       - uses: denoland/setup-deno@v1
@@ -85,7 +85,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ env.DENO_DIR }}
-          key: ${{ runner.os }}-${{ hashFiles('deno/deno.lock') }}
+          key: ${{ runner.os }}-${{ hashFiles('bindings/deno/deno.lock') }}
       - run: make test-deno
         env:
           DENO_SQLITE_ROBOTSTXT_PATH: ${{ github.workspace }}/dist/debug/robotstxt0
@@ -144,7 +144,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: sqlite-robotstxt-macos
-          path: npm/sqlite-robotstxt-darwin-x64/lib
+          path: bindings/nodesqlite-robotstxt-darwin-x64/lib
       - uses: actions/download-artifact@v3
         with:
           name: sqlite-robotstxt-macos-wheels
@@ -156,9 +156,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           cache: "npm"
-          cache-dependency-path: npm/sqlite-robotstxt/package.json
+          cache-dependency-path: bindings/nodesqlite-robotstxt/package.json
       - run: npm install
-        working-directory: npm/sqlite-robotstxt
+        working-directory: bindings/nodesqlite-robotstxt
       - run: make test-npm
       # for test-deno
       - uses: denoland/setup-deno@v1
@@ -168,7 +168,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ env.DENO_DIR }}
-          key: ${{ runner.os }}-${{ hashFiles('deno/deno.lock') }}
+          key: ${{ runner.os }}-${{ hashFiles('bindings/deno/deno.lock') }}
       - run: make test-deno
         env:
           DENO_SQLITE_ROBOTSTXT_PATH: ${{ github.workspace }}/dist/debug/robotstxt0
@@ -269,7 +269,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: sqlite-robotstxt-windows
-          path: npm/sqlite-robotstxt-windows-x64/lib
+          path: bindings/nodesqlite-robotstxt-windows-x64/lib
       - uses: actions/download-artifact@v3
         with:
           name: sqlite-robotstxt-windows-wheels
@@ -280,9 +280,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           cache: "npm"
-          cache-dependency-path: npm/sqlite-robotstxt/package.json
+          cache-dependency-path: bindings/nodesqlite-robotstxt/package.json
       - run: npm install
-        working-directory: npm/sqlite-robotstxt
+        working-directory: bindings/nodesqlite-robotstxt
       - run: make test-npm
       # for test-deno
       - uses: denoland/setup-deno@v1
@@ -292,7 +292,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ env.DENO_DIR }}
-          key: ${{ runner.os }}-${{ hashFiles('deno/deno.lock') }}
+          key: ${{ runner.os }}-${{ hashFiles('bindings/deno/deno.lock') }}
       - run: make test-deno
         env:
           DENO_SQLITE_ROBOTSTXT_PATH: ${{ github.workspace }}/dist/debug/robotstxt0
