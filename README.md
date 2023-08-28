@@ -14,22 +14,29 @@ select robotstxt_matches(
 ); -- 0 or 1
 ```
 
-Find all User-Agents listed in a `robots.txt` file.
+Find all indvidual rules specified in a `robots.txt` file.
 
 ```sql
 select *
-from robotstxt_user_agents(
-  readfile('robots.txt')
-);
+from robotstxt_rules(
+  readfile('tests/examples/en.wikipedia.org.robots.txt')
+)
+limit 10;
 /*
-┌─────────────────────┬────────┬───────┐
-│        name         │ source │ rules │
-├─────────────────────┼────────┼───────┤
-│ *                   │ 1      │       │
-│ AdsBot-Google       │ 280    │       │
-│ Twitterbot          │ 288    │       │
-│ facebookexternalhit │ 295    │       │
-└─────────────────────┴────────┴───────┘
+┌────────────────────────────┬────────┬───────────┬──────┐
+│         user_agent         │ source │ rule_type │ path │
+├────────────────────────────┼────────┼───────────┼──────┤
+│ MJ12bot                    │ 12     │ disallow  │ /    │
+│ Mediapartners-Google*      │ 16     │ disallow  │ /    │
+│ IsraBot                    │ 20     │ disallow  │      │
+│ Orthogaffe                 │ 23     │ disallow  │      │
+│ UbiCrawler                 │ 28     │ disallow  │ /    │
+│ DOC                        │ 31     │ disallow  │ /    │
+│ Zao                        │ 34     │ disallow  │ /    │
+│ sitecheck.internetseer.com │ 39     │ disallow  │ /    │
+│ Zealbot                    │ 42     │ disallow  │ /    │
+│ MSIECrawler                │ 45     │ disallow  │ /    │
+└────────────────────────────┴────────┴───────────┴──────┘
 */
 ```
 
@@ -37,31 +44,32 @@ Use with `sqlite-http` to requests `robots.txt` files on the fly.
 
 ```sql
 select *
-from robotstxt_user_agents(
-  http_get_body('https://en.wikipedia.org/robots.txt')
+from robotstxt_rules(
+  http_get_body('https://www.reddit.com/robots.txt')
 )
 limit 10;
+
+
 /*
-┌────────────────────────────┬────────┬───────┐
-│            name            │ source │ rules │
-├────────────────────────────┼────────┼───────┤
-│ MJ12bot                    │ 11     │       │
-│ Mediapartners-Google*      │ 15     │       │
-│ IsraBot                    │ 19     │       │
-│ Orthogaffe                 │ 22     │       │
-│ UbiCrawler                 │ 27     │       │
-│ DOC                        │ 30     │       │
-│ Zao                        │ 33     │       │
-│ sitecheck.internetseer.com │ 38     │       │
-│ Zealbot                    │ 41     │       │
-│ MSIECrawler                │ 44     │       │
-└────────────────────────────┴────────┴───────┘
+┌────────────┬────────┬───────────┬─────────────────────┐
+│ user_agent │ source │ rule_type │        path         │
+├────────────┼────────┼───────────┼─────────────────────┤
+│ 008        │ 3      │ disallow  │ /                   │
+│ voltron    │ 7      │ disallow  │ /                   │
+│ bender     │ 10     │ disallow  │ /my_shiny_metal_ass │
+│ Gort       │ 13     │ disallow  │ /earth              │
+│ MJ12bot    │ 16     │ disallow  │ /                   │
+│ PiplBot    │ 19     │ disallow  │ /                   │
+│ *          │ 22     │ disallow  │ /*.json             │
+│ *          │ 23     │ disallow  │ /*.json-compact     │
+│ *          │ 24     │ disallow  │ /*.json-html        │
+│ *          │ 25     │ disallow  │ /*.xml              │
+└────────────┴────────┴───────────┴─────────────────────┘
 */
 ```
 
 ## TODO
 
 - [ ] `robotstxt_allowed(rules, path)` overload on `robotstxt_user_agents`
-- [ ] `robotstxt_rules`
 - [ ] sitemaps?
 - [ ] unknown directives?
