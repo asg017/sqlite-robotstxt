@@ -3,12 +3,8 @@ build/
 vendor/robotstxt
 vendor/sqlite
 
-
-# Added by cargo
-
 /target
 /Cargo.lock
 .vscode
 *.csv
 *.db
-/examples
