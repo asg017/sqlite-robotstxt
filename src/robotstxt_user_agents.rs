@@ -5,7 +5,7 @@ use sqlite_loadable::prelude::*;
 use sqlite_loadable::{
     api,
     table::{BestIndexError, ConstraintOperator, IndexInfo, VTab, VTabArguments, VTabCursor},
-    Result,
+    Error, Result,
 };
 
 use crate::utils::{parse, RobotsInfo};
@@ -53,17 +53,14 @@ impl<'vtab> VTab<'vtab> for UserAgentsTable {
     fn best_index(&self, mut info: IndexInfo) -> core::result::Result<(), BestIndexError> {
         let mut has_robotstxt = false;
         for mut constraint in info.constraints() {
-            match column(constraint.column_idx()) {
-                Some(Columns::Robotstxt) => {
-                    if constraint.usable() && constraint.op() == Some(ConstraintOperator::EQ) {
-                        constraint.set_omit(true);
-                        constraint.set_argv_index(1);
-                        has_robotstxt = true;
-                    } else {
-                        return Err(BestIndexError::Constraint);
-                    }
+            if let Some(Columns::Robotstxt) = column(constraint.column_idx()) {
+                if constraint.usable() && constraint.op() == Some(ConstraintOperator::EQ) {
+                    constraint.set_omit(true);
+                    constraint.set_argv_index(1);
+                    has_robotstxt = true;
+                } else {
+                    return Err(BestIndexError::Constraint);
                 }
-                _ => todo!(),
             }
         }
         if !has_robotstxt {
@@ -86,6 +83,7 @@ pub struct UserAgentsCursor {
     /// Base class. Must be first
     base: sqlite3_vtab_cursor,
     rowid: i64,
+    robotstxt: String,
     info: Option<RobotsInfo>,
 }
 impl UserAgentsCursor {
@@ -94,6 +92,7 @@ impl UserAgentsCursor {
         UserAgentsCursor {
             base,
             rowid: 0,
+            robotstxt: String::new(),
             info: None,
         }
     }
@@ -106,7 +105,9 @@ impl VTabCursor for UserAgentsCursor {
         _idx_str: Option<&str>,
         values: &[*mut sqlite3_value],
     ) -> Result<()> {
-        let robotstxt = api::value_text(values.get(0).unwrap()).unwrap();
+        let robotstxt = api::value_text(values.get(0).ok_or_else(|| Error::new_message("TODO"))?)
+            .map_err(|_| Error::new_message("TODO"))?;
+        self.robotstxt = robotstxt.to_owned();
         self.info = Some(parse(robotstxt));
         self.rowid = 0;
         Ok(())
@@ -127,6 +128,7 @@ impl VTabCursor for UserAgentsCursor {
         match column(i) {
             Some(Columns::Name) => api::result_text(context, current.name.clone())?,
             Some(Columns::Source) => api::result_int64(context, current.line_number.into()),
+            Some(Columns::Robotstxt) => api::result_text(context, self.robotstxt.as_str())?,
             _ => (),
         }
         Ok(())

@@ -48,29 +48,30 @@ impl RobotsParseHandler for RobotsInfo {
     }
 
     fn handle_allow(&mut self, line_num: u32, value: &str) {
-        let current = self.current_user_agent.as_mut().unwrap();
-        current.rules.push(RobotsUserAgentRule {
-            rule_type: RobotsUserAgentRuleType::Allow,
-            value: value.to_owned(),
-            line_number: line_num,
-        });
+        if let Some(current) = self.current_user_agent.as_mut() {
+            current.rules.push(RobotsUserAgentRule {
+                rule_type: RobotsUserAgentRuleType::Allow,
+                value: value.to_owned(),
+                line_number: line_num,
+            });
+        }
     }
-
     fn handle_disallow(&mut self, line_num: u32, value: &str) {
-        let current = self.current_user_agent.as_mut().unwrap();
-        current.rules.push(RobotsUserAgentRule {
-            rule_type: RobotsUserAgentRuleType::Disallow,
-            value: value.to_owned(),
-            line_number: line_num,
-        });
+        if let Some(current) = self.current_user_agent.as_mut() {
+            current.rules.push(RobotsUserAgentRule {
+                rule_type: RobotsUserAgentRuleType::Disallow,
+                value: value.to_owned(),
+                line_number: line_num,
+            });
+        }
     }
 
-    fn handle_sitemap(&mut self, line_num: u32, value: &str) {
+    fn handle_sitemap(&mut self, _line_num: u32, _value: &str) {
         //println!("sitemap {} {}", line_num, value);
     }
 
     // Any other unrecognized name/v pairs.
-    fn handle_unknown_action(&mut self, line_num: u32, action: &str, value: &str) {
+    fn handle_unknown_action(&mut self, _line_num: u32, _action: &str, _value: &str) {
         //println!("unkown {} {} {}", line_num, action, value);
     }
 }
