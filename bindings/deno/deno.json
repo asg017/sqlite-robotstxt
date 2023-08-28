@@ -1,6 +1,6 @@
 {
   "name": "sqlite-robotstxt",
-  "version": "0.0.1-alpha.2",
+  "version": "0.0.1-alpha.3",
   "github": "https://github.com/asg017/sqlite-robotstxt",
   "tasks": {
     "test": "deno test --unstable -A test.ts"
