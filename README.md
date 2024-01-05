@@ -73,3 +73,6 @@ limit 10;
 - [ ] `robotstxt_allowed(rules, path)` overload on `robotstxt_user_agents`
 - [ ] sitemaps?
 - [ ] unknown directives?
+
+- [ ] pytest + syrupy
+- [ ] ensure no panics

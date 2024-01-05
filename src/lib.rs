@@ -20,12 +20,10 @@ pub fn robotstxt_matches(
     context: *mut sqlite3_context,
     values: &[*mut sqlite3_value],
 ) -> Result<()> {
-    let robotstxt = api::value_text(values.get(0).ok_or_else(|| Error::new_message("TODO"))?)
-        .map_err(|_| Error::new_message("TODO"))?;
-    let useragent = api::value_text(values.get(1).ok_or_else(|| Error::new_message("TODO"))?)
-        .map_err(|_| Error::new_message("TODO"))?;
-    let url = api::value_text(values.get(2).ok_or_else(|| Error::new_message("TODO"))?)
-        .map_err(|_| Error::new_message("TODO"))?;
+    let robotstxt = api::value_text(values.get(0).ok_or_else(|| Error::new_message("TODO"))?)?;
+    let useragent = api::value_text(values.get(1).ok_or_else(|| Error::new_message("TODO"))?)?;
+    let url = api::value_text(values.get(2).ok_or_else(|| Error::new_message("TODO"))?)?;
+
     let mut matcher = DefaultMatcher::default();
     let result = matcher.one_agent_allowed_by_robots(robotstxt, useragent, url);
     api::result_bool(context, result);
@@ -76,4 +74,17 @@ pub fn sqlite3_robotstxt_init(db: *mut sqlite3) -> Result<()> {
     define_table_function::<UserAgentsTable>(db, "robotstxt_user_agents", None)?;
     define_table_function::<RulesTable>(db, "robotstxt_rules", None)?;
     Ok(())
+}
+
+#[cfg(target_os = "emscripten")]
+#[no_mangle]
+pub extern "C" fn sqlite3_wasm_extra_init(_unused: *const std::ffi::c_char) -> std::ffi::c_int {
+    use sqlite_loadable::SQLITE_OKAY;
+    unsafe {
+        sqlite_loadable::ext::sqlite3ext_auto_extension(std::mem::transmute(
+            sqlite3_robotstxt_init as *const (),
+        ));
+    }
+
+    SQLITE_OKAY
 }

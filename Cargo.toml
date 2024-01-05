@@ -14,6 +14,8 @@ crate-type = ["lib", "dylib", "staticlib"]
 
 
 [dependencies]
-sqlite-loadable = "0.0.6-alpha.2"
+sqlite-loadable = "0.0.6-alpha.6"
 robotstxt = "0.3.0"
 
+[features]
+static = ["sqlite-loadable/static"]
